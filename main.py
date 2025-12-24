@@ -1,22 +1,23 @@
 from fastapi import FastAPI
-import requests
+from pydantic import BaseModel
+from groq import Groq
 import os
 
 app = FastAPI()
 
-OLLAMA_URL = "http://localhost:11434/api/generate"
-MODEL = os.getenv("MODEL_NAME", "phi")
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+class ChatRequest(BaseModel):
+    prompt: str
 
 @app.get("/")
 def health():
     return {"status": "ok"}
 
 @app.post("/chat")
-async def chat(prompt: str):
-    payload = {
-        "model": MODEL,
-        "prompt": prompt,
-        "stream": False
-    }
-    r = requests.post(OLLAMA_URL, json=payload)
-    return r.json()
+def chat(data: ChatRequest):
+    res = client.chat.completions.create(
+        model="llama3-8b-8192",
+        messages=[{"role": "user", "content": data.prompt}]
+    )
+    return {"answer": res.choices[0].message.content}
