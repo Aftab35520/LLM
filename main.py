@@ -10,14 +10,14 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "https://llm-1-abxf.onrender.com",
+        "https://assignmentai.com",     # your real frontend
+        "https://www.assignmentai.com", # if used
     ],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["POST", "GET"],
     allow_headers=["*"],
 )
+
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
