@@ -22,7 +22,9 @@ class ChatRequest(BaseModel):
 @app.get("/")
 def health():
     return {"status": "ok"}
-
+@app.head("/")
+def health_head():
+    return Response(status_code=200)
 @app.post("/chat")
 def chat(data: ChatRequest):
     res = client.chat.completions.create(
