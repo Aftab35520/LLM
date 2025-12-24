@@ -6,12 +6,14 @@ import os
 
 app = FastAPI()
 
+# Enhanced CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],          # 🔥 TEMPORARY but guaranteed
-    allow_credentials=False,      # 🔥 CRITICAL
-    allow_methods=["*"],
+    allow_origins=["*"],  # For development only
+    allow_credentials=True,  # Changed to True
+    allow_methods=["GET", "POST", "OPTIONS"],  # Specify methods
     allow_headers=["*"],
+    expose_headers=["*"],  # Expose all headers
 )
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
