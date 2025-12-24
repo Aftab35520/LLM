@@ -6,12 +6,16 @@ import os
 
 app = FastAPI()
 
-# ✅ ADD CORS (this is the ONLY change)
+# ✅ MUST be added immediately after app creation
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],      # allow all origins (for dev)
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "https://llm-1-abxf.onrender.com",
+    ],
     allow_credentials=True,
-    allow_methods=["*"],      # GET, POST, OPTIONS
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
@@ -28,6 +32,6 @@ def health():
 def chat(data: ChatRequest):
     res = client.chat.completions.create(
         model="llama3-8b-8192",
-        messages=[{"role": "user", "content": data.prompt}]
+        messages=[{"role": "user", "content": data.prompt}],
     )
     return {"answer": res.choices[0].message.content}
