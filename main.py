@@ -28,7 +28,7 @@ def health_head():
 @app.post("/chat")
 def chat(data: ChatRequest):
     res = client.chat.completions.create(
-        model="Qwen3.6 27B",  # ✅ FIXED
+        model="qwen/qwen3.6-27b",  # ✅ FIXED
         messages=[{"role": "user", "content": data.prompt}],
     )
     return {"answer": res.choices[0].message.content}
